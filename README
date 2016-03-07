@@ -7,3 +7,20 @@
 
 
 
+## virtual host example :
+
+<VirtualHost *:80>
+        ServerName project
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /home/APED
+        ErrorLog /home/APED/log.log
+
+         <Directory "/home/APED/" >
+            AllowOverride all
+
+        </Directory>
+
+
+        CustomLog /home/APED/access.log combined
+</VirtualHost>
