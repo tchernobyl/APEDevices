@@ -1,0 +1,19 @@
+<IfModule mod_rewrite.c>
+  RewriteCond %{SCRIPT_FILENAME} -d [OR]
+  RewriteCond %{SCRIPT_FILENAME} -f
+  RewriteRule "(^|/)\." - [F]
+
+
+  RewriteEngine on
+
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  RewriteRule . index.php
+</IfModule>
+
+<Limit GET POST PUT DELETE>
+order deny,allow
+allow from all
+</Limit>
