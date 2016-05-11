@@ -108,32 +108,30 @@ class User extends \backend\db\Model implements \yii\web\IdentityInterface, User
 
     /**
      * Generates the password hash.
-     *
      * @param string $password
-     * @param string $salt
-     *
      * @return string hash
      */
-    public function hashPassword($password, $salt)
+    public function hashPassword($password)
     {
-        return md5($salt . $password);
+
+        return md5($password);
     }
 
     /**
      * Validates password
-     *
      * @param  string $password password to validate
      * @return boolean if password provided is valid for current user
      */
     public function validatePassword($password)
     {
-        return $this->password === $this->hashPassword($password, $this->salt);
+
+
+        return $this->password_hash === $this->hashPassword($password);
     }
 
 
     /**
      * Finds user by username
-     *
      * @param  string $username
      * @return User
      */
@@ -180,6 +178,8 @@ class User extends \backend\db\Model implements \yii\web\IdentityInterface, User
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
+
+
         if (class_exists($type, false) and method_exists($type, 'findIdentityByAccessToken')) {
             $user = $type::findIdentityByAccessToken($token);
             if ($user) {
