@@ -13,14 +13,17 @@
 namespace backend\rest;
 
 
+use yii\web\ForbiddenHttpException;
+use backend\oauth\filters\auth\HttpBearerAuth;
+use backend\oauth\filters\auth\QueryParamAuth;
+use backend\oauth\filters\CompositeAuth;
 use backend\db\Model;
-
+use filsh\yii2\oauth2server\filters\ErrorToExceptionFilter;
 use yii\base\Action;
 use yii\filters\HttpCache;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\rest\ActiveController;
-use yii\web\ForbiddenHttpException;
 
 /**
  * Class Controller
@@ -47,8 +50,16 @@ class Controller extends ActiveController
         $behaviors = ArrayHelper::merge(
             parent::behaviors(),
             [
-
-
+                'authenticator' => [
+                    'class' => CompositeAuth::className(),
+                    'authMethods' => [
+                        ['class' => HttpBearerAuth::className()],
+                        ['class' => QueryParamAuth::className(), 'tokenParam' => 'accessToken'],
+                    ]
+                ],
+                'exceptionFilter' => [
+                    'class' => ErrorToExceptionFilter::className()
+                ],
                 'corsFilter' => [
                     'class' => \backend\rest\filters\Cors::className(),
                     'cors' => [

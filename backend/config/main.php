@@ -9,6 +9,7 @@ $params = array_merge(
 
 $module = require(__DIR__ . '/modules.php');
 return [
+
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
@@ -20,11 +21,19 @@ return [
     ],
     'modules' => $module,
     'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=APEDevices',
+            'username' => 'root',
+            'password' => 'maryam',
+            'charset' => 'utf8',
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST oauth2/<action:\w+>' => 'oauth2/default/<action>',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
@@ -61,7 +70,7 @@ return [
 
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\modules\user\models\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
