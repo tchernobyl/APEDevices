@@ -70,7 +70,7 @@ return [
 
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\modules\user\models\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
