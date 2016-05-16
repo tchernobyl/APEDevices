@@ -2,6 +2,7 @@
 
 namespace backend\oauth\controllers;
 
+use backend\modules\user\models\User;
 use backend\oauth\models\OauthAccessTokens;
 use filsh\yii2\oauth2server\filters\ErrorToExceptionFilter;
 use Yii;
@@ -71,15 +72,27 @@ class DefaultController extends \yii\rest\Controller
         $server = $this->module->getServer();
         $request = $this->module->getRequest();
 
+        $_user = $this->findByAccessToken("ac0fc4e5436cf7ac315933246365d849fc9ad3e0");
+
         $response = $server->handleTokenRequest($request);
-        $user = Yii::$app->user->identity;
+
+
         $resp = $response->getParameters();
         if ($resp["access_token"] && $resp["refresh_token"]) {
 
-            $resp["user"] = $user;
+            $resp["user"] = $_user;
         }
 
         return $resp;
+    }
+
+    private function findByAccessToken($token)
+    {
+        $token = OauthAccessTokens::getActiveToken($token);
+        $userClass = \Yii::$app->user->identityClass;
+        $user = $userClass::findIdentity($token['user_id']);
+
+        return $user;
     }
 
     public function actionLogout($token)
