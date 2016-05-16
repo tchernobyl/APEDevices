@@ -72,7 +72,14 @@ class DefaultController extends \yii\rest\Controller
         $request = $this->module->getRequest();
 
         $response = $server->handleTokenRequest($request);
-        return $response->getParameters();
+        $user = Yii::$app->user->identity;
+        $resp = $response->getParameters();
+        if ($resp["access_token"] && $resp["refresh_token"]) {
+
+            $resp["user"] = $user;
+        }
+
+        return $resp;
     }
 
     public function actionLogout($token)
