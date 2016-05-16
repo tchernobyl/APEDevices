@@ -5,7 +5,9 @@ namespace backend\modules\user\models;
 use backend\modules\content\models\Content;
 
 use backend\modules\file\models\File;
+use OAuth2\Storage\UserCredentialsInterface;
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
@@ -21,7 +23,7 @@ use Yii;
  * @property string $activated_at
  * @property Content[] $contentDevices
  */
-class User extends \backend\db\Model
+class User extends \backend\db\Model implements \yii\web\IdentityInterface, UserCredentialsInterface
 {
     /**
      * @inheritdoc
@@ -102,5 +104,113 @@ class User extends \backend\db\Model
             'user_image',
             ['user_id' => 'id']
         );
+    }
+
+    /**
+     * Generates the password hash.
+     * @param string $password
+     * @return string hash
+     */
+    public function hashPassword($password)
+    {
+
+        return md5($password);
+    }
+
+    /**
+     * Validates password
+     * @param  string $password password to validate
+     * @return boolean if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+
+
+        return $this->password_hash === $this->hashPassword($password);
+    }
+
+
+    /**
+     * Finds user by username
+     * @param  string $username
+     * @return User
+     */
+    public static function findByUsername($username)
+    {
+        return self::find()->where(['username' => $username])->orWhere(['email' => $username])->one();
+    }
+
+
+    public function checkUserCredentials($username, $password)
+    {
+
+
+        if (!$user = $this->findByUsername($username)) {
+            return false;
+        }
+
+        if (!$user->validatePassword($password)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getUserDetails($username)
+    {
+        $user = $this->findByUsername($username);
+
+        return array(
+            'user_id' => $user->id
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+
+
+        if (class_exists($type, false) and method_exists($type, 'findIdentityByAccessToken')) {
+            $user = $type::findIdentityByAccessToken($token);
+            if ($user) {
+                return $user;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->authKey === $authKey;
     }
 }

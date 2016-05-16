@@ -28,7 +28,12 @@ return [
         'file' => [
             'class' => 'backend\modules\file\Module',
         ],
-
+        'payment' => [
+            'class' => 'backend\modules\payment\payment',
+        ],
+        'shipping' => [
+            'class' => 'backend\modules\shipping\shipping',
+        ],
     ],
     'globalComponents' => [
         'filterRegistry' => [

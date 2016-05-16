@@ -8,8 +8,8 @@ return [
         'db' => [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=APEDevices',
-            'username' => '',
-            'password' => '',
+            'username' => 'root',
+            'password' => 'maryam',
             'charset' => 'utf8',
         ],
         'mailer' => [
