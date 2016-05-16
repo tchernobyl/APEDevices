@@ -72,12 +72,12 @@ class DefaultController extends \yii\rest\Controller
         $server = $this->module->getServer();
         $request = $this->module->getRequest();
 
-        $_user = $this->findByAccessToken("ac0fc4e5436cf7ac315933246365d849fc9ad3e0");
 
         $response = $server->handleTokenRequest($request);
 
 
         $resp = $response->getParameters();
+        $_user = $this->findByAccessToken($resp["access_token"]);
         if ($resp["access_token"] && $resp["refresh_token"]) {
 
             $resp["user"] = $_user;
