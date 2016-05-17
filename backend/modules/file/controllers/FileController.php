@@ -13,6 +13,10 @@ namespace backend\modules\file\controllers;
 
 
 use backend\APEDevices\components\controllers\ControllerAPED;
+use backend\oauth\filters\auth\HttpBearerAuth;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\QueryParamAuth;
+use yii\helpers\ArrayHelper;
 
 class FileController extends ControllerAPED
 {
@@ -33,7 +37,32 @@ class FileController extends ControllerAPED
                     'class' => 'backend\modules\file\controllers\actions\IndexAction',
                     'modelClass' => $this->modelClass,
 //                    'checkAccess' => [$this, 'checkAccess'],
+                ],
+                'view' => [
+                    'class' => 'yii\rest\ViewAction',
+                    'modelClass' => $this->modelClass,
                 ]
+            ]
+        );
+    }
+
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            parent::behaviors(),
+            [
+                'authenticator' => [
+                    'class' => CompositeAuth::className(),
+                    'only' => ['create', 'update'],
+                    'authMethods' => [
+                        ['class' => HttpBearerAuth::className()],
+                        [
+                            'class' => QueryParamAuth::className(),
+                            'tokenParam' => 'accessToken',
+
+                        ],
+                    ]
+                ],
             ]
         );
     }

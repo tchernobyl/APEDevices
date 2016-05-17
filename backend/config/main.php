@@ -25,7 +25,7 @@ return [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=APEDevices',
             'username' => 'root',
-            'password' => 'maryam',
+            'password' => 'pw2300063',
             'charset' => 'utf8',
         ],
         'urlManager' => [
