@@ -34,6 +34,9 @@ return [
         'shipping' => [
             'class' => 'backend\modules\shipping\shipping',
         ],
+        'paymentmethod' => [
+            'class' => 'backend\modules\paymentmethod\paymentmethod',
+        ],
     ],
     'globalComponents' => [
         'filterRegistry' => [

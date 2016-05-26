@@ -47,7 +47,8 @@ return [
                         'backend/user/user',
                         'backend/message/message',
                         'backend/payment/payment',
-                        'backend/shipping/shipping'
+                        'backend/shipping/shipping',
+                        'backend/paymentmethod/paymentmethod'
                     ]
                 ],
                 [
