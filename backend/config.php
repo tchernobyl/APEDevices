@@ -37,6 +37,9 @@ return [
         'paymentmethod' => [
             'class' => 'backend\modules\paymentmethod\paymentmethod',
         ],
+        'customer' => [
+            'class' => 'backend\modules\customer\customer',
+        ],
     ],
     'globalComponents' => [
         'filterRegistry' => [
