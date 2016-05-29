@@ -47,7 +47,19 @@ return [
                         'backend/user/user',
                         'backend/message/message',
                         'backend/payment/payment',
-                        'backend/shipping/shipping'
+                        'backend/shipping/shipping',
+                        'backend/paymentmethod/paymentmethod',
+                        'backend/customer/customer'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'backend/customer/customer',
+                    ],
+                    'extraPatterns' => [
+
+                        'POST signup' => 'signup'
                     ]
                 ],
                 [
