@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\modules\user\models;
+namespace backend\modules\customer\models;
 
 use backend\modules\content\models\Content;
 
 use backend\modules\file\models\File;
-use OAuth2\Storage\UserCredentialsInterface;
+
 use Yii;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "customer".
  * @property integer $id
  * @property string $username
  * @property string $auth_key
@@ -21,9 +21,8 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  * @property string $activated_at
- * @property Content[] $contentDevices
  */
-class User extends \backend\db\Model implements \yii\web\IdentityInterface, UserCredentialsInterface
+class Customer extends \backend\db\Model
 {
     /**
      * @inheritdoc
@@ -133,7 +132,7 @@ class User extends \backend\db\Model implements \yii\web\IdentityInterface, User
     /**
      * Finds user by username
      * @param  string $username
-     * @return User
+     * @return Customer
      */
     public static function findByUsername($username)
     {
@@ -156,14 +155,6 @@ class User extends \backend\db\Model implements \yii\web\IdentityInterface, User
         return true;
     }
 
-    public function getUserDetails($username)
-    {
-        $user = $this->findByUsername($username);
-
-        return array(
-            'user_id' => $user->id
-        );
-    }
 
     /**
      * @inheritdoc
@@ -173,22 +164,6 @@ class User extends \backend\db\Model implements \yii\web\IdentityInterface, User
         return self::findOne($id);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-
-
-        if (class_exists($type, false) and method_exists($type, 'findIdentityByAccessToken')) {
-            $user = $type::findIdentityByAccessToken($token);
-            if ($user) {
-                return $user;
-            }
-        }
-
-        return null;
-    }
 
     /**
      * @inheritdoc
@@ -198,19 +173,5 @@ class User extends \backend\db\Model implements \yii\web\IdentityInterface, User
         return $this->id;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
 }

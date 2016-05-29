@@ -1,16 +1,17 @@
 <?php
 
-namespace backend\modules\field\controllers;
+namespace backend\modules\customer\controllers;
 
-use backend\APEDevices\components\controllers\ControllerAPED;
 use backend\oauth\filters\auth\HttpBearerAuth;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\helpers\ArrayHelper;
+use backend\APEDevices\components\controllers\ControllerAPED;
 
-class FieldController extends ControllerAPED
+
+class CustomerController extends ControllerAPED
 {
-    public $modelClass = 'backend\modules\field\models\Field';
+    public $modelClass = 'backend\modules\customer\models\Customer';
 
     public function behaviors()
     {
@@ -19,7 +20,7 @@ class FieldController extends ControllerAPED
             [
                 'authenticator' => [
                     'class' => CompositeAuth::className(),
-                    'only' => ['create', 'update'],
+                    'only' => ['update'],
                     'authMethods' => [
                         ['class' => HttpBearerAuth::className()],
                         [
@@ -38,6 +39,7 @@ class FieldController extends ControllerAPED
      */
     public function actions()
     {
+
         return array_merge(
             parent::actions(),
             [
@@ -48,7 +50,11 @@ class FieldController extends ControllerAPED
                 'view' => [
                     'class' => 'yii\rest\ViewAction',
                     'modelClass' => $this->modelClass,
-                ]
+                ],
+                'signup' => [
+                    'class' => 'backend\modules\customer\controllers\actions\SignUpAction',
+                    'modelClass' => $this->modelClass,
+                ],
             ]
         );
     }

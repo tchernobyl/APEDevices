@@ -24,6 +24,7 @@ use yii\filters\HttpCache;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\rest\ActiveController;
+
 /**
  * Class Controller
  * @package backend\rest
@@ -59,7 +60,6 @@ class Controller extends ActiveController
                 'exceptionFilter' => [
                     'class' => ErrorToExceptionFilter::className()
                 ],
-
                 'corsFilter' => [
                     'class' => \backend\rest\filters\Cors::className(),
                     'cors' => [
@@ -160,12 +160,10 @@ class Controller extends ActiveController
                 'index' => [
                     'class' => 'backend\rest\action\IndexAction',
                     'modelClass' => $this->modelClass,
-                    'checkAccess' => [$this, 'checkAccess'],
                 ],
                 'view' => [
                     'class' => 'yii\rest\ViewAction',
                     'modelClass' => $this->modelClass,
-                    'checkAccess' => [$this, 'checkAccess'],
                 ],
                 'create' => [
                     'class' => 'backend\rest\action\CreateAction',

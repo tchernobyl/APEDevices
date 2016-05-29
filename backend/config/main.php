@@ -25,7 +25,7 @@ return [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=APEDevices',
             'username' => 'root',
-            'password' => 'maryam',
+            'password' => 'pw2300063',
             'charset' => 'utf8',
         ],
         'urlManager' => [
@@ -47,7 +47,19 @@ return [
                         'backend/user/user',
                         'backend/message/message',
                         'backend/payment/payment',
-                        'backend/shipping/shipping'
+                        'backend/shipping/shipping',
+                        'backend/paymentmethod/paymentmethod',
+                        'backend/customer/customer'
+                    ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => [
+                        'backend/customer/customer',
+                    ],
+                    'extraPatterns' => [
+
+                        'POST signup' => 'signup'
                     ]
                 ],
                 [
@@ -70,7 +82,7 @@ return [
 
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'backend\modules\user\models\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
